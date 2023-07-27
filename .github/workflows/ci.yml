@@ -12,10 +12,9 @@ jobs:
     env:
         SNOWSQL_PWD: ${{ secrets.SNOWSQL_PASSWORD }}
         SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
-        SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
+        SNOWSQL_USERNAME: ${{ secrets.SNOWSQL_USERNAME }}
         SNOWSQL_DATABASE: ${{ secrets.SNOWSQL_DATABASE }}
         SNOWSQL_SCHEMA: ${{ secrets.SNOWSQL_SCHEMA }}
-        SNOWSQL_ROLE: ${{ secrets.SNOWSQL_ROLE }}
         SNOWSQL_WAREHOUSE: ${{ secrets.SNOWSQL_WAREHOUSE }}
 
     steps:
@@ -28,6 +27,15 @@ jobs:
           chmod +x snowsql-linux_x86_64.bash
           echo -ne '\n\n' | bash snowsql-linux_x86_64.bash
           ~/bin/snowsql -v
+
+      - name: Create Snowflake warehouse
+        env:
+            SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
+            SNOWSQL_USERNAME: ${{ secrets.SNOWSQL_USERNAME }}
+            SNOWSQL_PASSWORD: ${{ secrets.SNOWSQL_PASSWORD }}
+        run: |
+          ~/bin/snowsql -a -a ${{ secrets.SNOWSQL_ACCOUNT }} -u ${{ secrets.SNOWSQL_USERNAME }} -w ${{ secrets.SNOWSQL_WAREHOUSE }} -d ${{ secrets.SNOWSQL_DATABASE }} -s ${{ secrets.SNOWSQL_SCHEMA }} -f create_warehouse.sql
+  
 
       - name: Run tests
         run: |
