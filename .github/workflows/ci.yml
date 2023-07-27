@@ -34,7 +34,7 @@ jobs:
             SNOWSQL_USERNAME: ${{ secrets.SNOWSQL_USERNAME }}
             SNOWSQL_PASSWORD: ${{ secrets.SNOWSQL_PASSWORD }}
         run: |
-          ~/bin/snowsql -a -a ${{ secrets.SNOWSQL_ACCOUNT }} -u ${{ secrets.SNOWSQL_USERNAME }} -w ${{ secrets.SNOWSQL_WAREHOUSE }} -d ${{ secrets.SNOWSQL_DATABASE }} -s ${{ secrets.SNOWSQL_SCHEMA }} -f create_warehouse.sql
+          ~/bin/snowsql -a ${{ secrets.SNOWSQL_ACCOUNT }} -u ${{ secrets.SNOWSQL_USERNAME }} -w ${{ secrets.SNOWSQL_WAREHOUSE }} -d ${{ secrets.SNOWSQL_DATABASE }} -s ${{ secrets.SNOWSQL_SCHEMA }} -f create_warehouse.sql
   
 
       - name: Run tests
