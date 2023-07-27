@@ -17,7 +17,7 @@ jobs:
         run: |
           curl -o snowsql-linux_x86_64.bash https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.27-linux_x86_64.bash
           chmod +x snowsql-linux_x86_64.bash
-          echo "Y Y" | bash snowsql-linux_x86_64.bash
+          echo -ne '\n\n' | bash snowsql-linux_x86_64.bash
 
       - name: Run tests
         run: |
