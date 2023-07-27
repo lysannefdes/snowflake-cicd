@@ -3,7 +3,7 @@
 SELECT COUNT(*) AS table_exists
 FROM information_schema.tables
 WHERE table_schema = 'SNOWFLAKE_CICD'
-  AND table_name = 'test_table';
+  AND table_name = 'test_new_table';
 
 -- Test if the 'test_table' has the expected columns
 SELECT
@@ -13,5 +13,5 @@ SELECT
   END AS column_count
 FROM information_schema.columns
 WHERE table_schema = 'SNOWFLAKE_CICD'
-  AND table_name = 'test_table'
+  AND table_name = 'test_new_table'
   AND column_name IN ('id', 'name');
