@@ -1,0 +1,28 @@
+name: Snowflake CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SnowSQL
+        run: |
+          curl -o snowsql-1.2.6-linux_x86_64.bash https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.6-linux_x86_64.bash
+          bash snowsql-1.2.6-linux_x86_64.bash
+
+      - name: Run tests
+        run: |
+          snowsql -a ${{ secrets.SNOWSQL_ACCOUNT }} -u ${{ secrets.SNOWSQL_USERNAME }} -w ${{ secrets.SNOWSQL_WAREHOUSE }} -d ${{ secrets.SNOWSQL_DATABASE }} -s ${{ secrets.SNOWSQL_SCHEMA }} -f create_table.sql
+          snowsql -a ${{ secrets.SNOWSQL_ACCOUNT }} -u ${{ secrets.SNOWSQL_USERNAME }} -w ${{ secrets.SNOWSQL_WAREHOUSE }} -d ${{ secrets.SNOWSQL_DATABASE }} -s ${{ secrets.SNOWSQL_SCHEMA }} -f test_table.sql
+
+      - name: Deploy to Snowflake
+        run: |
+          snowsql -a ${{ secrets.SNOWSQL_ACCOUNT }} -u ${{ secrets.SNOWSQL_USERNAME }} -w ${{ secrets.SNOWSQL_WAREHOUSE }} -d ${{ secrets.SNOWSQL_DATABASE }} -s ${{ secrets.SNOWSQL_SCHEMA }} -f create_table.sql
